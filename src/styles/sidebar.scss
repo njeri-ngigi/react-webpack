@@ -1,0 +1,72 @@
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.sidebar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .sidebar__contianer {
+    color: white;
+
+    @extend .flex-center;
+
+    span {
+      font-size: 1.2em;
+      padding: 10px 10px;
+      color: rgba($color: white, $alpha: 0.5);
+      cursor: default;
+    }
+
+    .month {
+      font-size: 0.9em;
+      color: white;
+    }
+
+    .date {
+      transition: .5s ease-in-out;
+    }
+
+    .date:hover {
+      cursor: pointer;
+      color: white;
+      font-size: 1.3em;
+    }
+
+    .today {
+      @extend .flex-center;
+      flex-direction: row;
+      font-size: 1.5em;
+      
+      .today__dash {
+        border-bottom: 2px solid orange;
+        width: 25px;
+        text-align: center;
+        font-size: 0.6em;
+        color: white;
+      }
+
+      span {
+        color: white;
+      }
+    }
+    
+    .see-today {
+      font-size: 0.6em;
+      color: white;
+      letter-spacing: 2px;
+      transition: .5s ease-in-out;
+    }
+
+    .see-today:hover {
+      cursor: pointer;
+      color: orange;
+      font-size: 0.7em;
+    }
+  }
+}

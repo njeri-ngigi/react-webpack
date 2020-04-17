@@ -1,0 +1,45 @@
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  padding-left: 100px;
+  
+  .content__card {
+    display: flex;
+    flex-direction: column;
+
+    height: 250px;
+    width: 250px;
+    // box-shadow: 1px 1px 1px white;
+    border: 2px solid white;
+    padding: 30px;
+    
+    textarea {
+      background-color: #333;
+      border: none;
+      color: white;
+      outline: none;
+      width: 230px;
+      height: 180px;
+      letter-spacing: 4px;
+      resize: none;
+    }
+
+    .addTodos {
+      padding: 10px;
+      background-color: orange;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .addTodos:hover {
+      cursor: pointer;
+    }
+  }
+}
