@@ -13,10 +13,10 @@
   .content__card {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 
-    height: 250px;
+    min-height: 300px;
     width: 250px;
-    // box-shadow: 1px 1px 1px white;
     border: 2px solid white;
     padding: 30px;
     
@@ -31,15 +31,20 @@
       resize: none;
     }
 
-    .addTodos {
-      padding: 10px;
-      background-color: orange;
-      border-radius: 50%;
-      position: absolute;
+    .add__icon {
+      color: white;
+      font-size: 1.3em;
+      align-self: flex-end;
+      transition: .5s ease-in-out;
     }
 
-    .addTodos:hover {
+    .add__icon:hover {
       cursor: pointer;
+      color: orange;
+    }
+
+    .todos__list {
+      padding-left: 10px;
     }
   }
 }

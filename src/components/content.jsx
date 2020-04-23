@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPencilAlt, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+
+import Checkbox from './checkbox';
+import NewInput from './newInput';
 
 import '../styles/content.scss';
 
@@ -8,63 +11,90 @@ class Content extends Component {
   constructor () {
     super();
     this.state = {
-      todos: `- Buy Milk \n- Do Home work`,
-      edit: false,
-      textareaValue: '',
-      textChanged: false
+      todos: [
+        {
+          done: false,
+          value: 'buy milk'
+        }, 
+        {
+          done: false,
+          value: 'sell chocos'
+        },
+        {
+          done: false,
+          value: 'make a salad'
+        }
+      ],
+      newTodo: false
     } 
-    this.editTodos = this.editTodos.bind(this);
-    this.saveTodos = this.saveTodos.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
+    this.handleSaveEdit = this.handleSaveEdit.bind(this);
+    this.toggleAddTodo = this.toggleAddTodo.bind(this);
+    this.handleNewSaveTodo = this.handleNewSaveTodo.bind(this);
+    this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
   }
 
-  editTodos() {
-    this.setState({ edit: true });
+  handleSaveEdit(key, value, position) {
+    const { todos } = this.state;
+    todos[position][key] = value;
+    this.setState({ todos });
   }
 
-  handleEdit(event) {
-    const { value } = event.target;
-    this.setState({ 
-      textareaValue: value,
-      textChanged: true
+  toggleAddTodo() {
+    this.setState({ newTodo: !this.state.newTodo });
+  }
+
+  handleNewSaveTodo(value) {
+    const todos = [...this.state.todos];
+    todos.push({
+      done: false,
+      value
     });
-    console.log('Calling????????')
+    this.setState({ newTodo: false });
+    this.setState({ todos });
   }
 
-  saveTodos() {
-    const { textareaValue, textChanged } = this.state
-    if (textChanged) {
-      this.setState({todos: textareaValue});
-    } 
-    this.setState({ edit: false }) 
+  handleDeleteTodo(position) {
+    const { todos } = this.state;
+    todos.splice(position, 1);
+    this.setState({ todos })
+
   }
 
   render() {
+    const { todos, newTodo } = this.state;
+    const display = newTodo ? 'block' : 'none';
+
+    const todosList = todos.map((todo, index) => {
+      const needs = {
+        todo,
+        handleSave: this.handleSaveEdit,
+        handleDelete: this.handleDeleteTodo,
+        position: index
+      }
+      return <Checkbox needs={needs} key={`todo-${index}`}/>
+    });
+
     return (
       <div className="content">
         <div className="content__card">
-          <h3>TODOs</h3>
-          { 
-            this.state.edit === false && 
-            <div>
-              <p>
-                {this.state.todos}
-              </p>
-              <span className="addTodos" onClick={this.editTodos}>
-                <FontAwesomeIcon icon={faPen}></FontAwesomeIcon>
-              </span>
-            </div> 
-          }
-          { 
-            this.state.edit === true && 
-            <form>
-              <textarea value={this.state.todos} onChange={this.handleEdit}></textarea>
-              <button onClick={this.saveTodos}>Save</button>
-            </form>
+          <div>
+            <h3>TODOs</h3>
+            <div className="todos__list">
+              { todosList }
+            </div>
+            <NewInput 
+              key="newInput" display={display}
+              saveNewTodo={this.handleNewSaveTodo} 
+              cancelNewTodo={this.toggleAddTodo}/>
+          </div>
+          { !newTodo && 
+            <span className="add__icon" onClick={this.toggleAddTodo}>
+              <FontAwesomeIcon icon={faPlusCircle}/>
+            </span>
           }
         </div>
       </div>
-    )
+    );
   } 
 }
 export default Content;
