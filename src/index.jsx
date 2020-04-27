@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Form from './components/Form.jsx';
+import Dashboard from './containers/Dashboard';
 
 const wrapper = document.getElementById('container');
-wrapper ? ReactDOM.render(<Form/>, wrapper) : false;
+wrapper ? ReactDOM.render(<Dashboard/>, wrapper) : false;
