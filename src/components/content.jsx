@@ -25,12 +25,20 @@ class Content extends Component {
           value: 'make a salad'
         }
       ],
-      newTodo: false
+      newTodo: false,
+      time: new Date()
     } 
     this.handleSaveEdit = this.handleSaveEdit.bind(this);
     this.toggleAddTodo = this.toggleAddTodo.bind(this);
     this.handleNewSaveTodo = this.handleNewSaveTodo.bind(this);
     this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
+    this.getTime = this.getTime.bind(this);
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      this.setState({ time: new Date() })
+    }, 60000);
   }
 
   handleSaveEdit(key, value, position) {
@@ -60,8 +68,19 @@ class Content extends Component {
 
   }
 
+  getTime(time) {
+    const hours = time.getHours();
+    const percentage = Math.floor(hours/24*100)
+    return { 
+      hours: `0${hours}`.slice(-2),
+      minutes: time.getMinutes(),
+      percentageOfDay: percentage
+    }
+  }
+
   render() {
-    const { todos, newTodo } = this.state;
+    const { todos, newTodo, time } = this.state;
+    const { hours, minutes, percentageOfDay } = this.getTime(time);
     const display = newTodo ? 'block' : 'none';
 
     const todosList = todos.map((todo, index) => {
@@ -76,22 +95,36 @@ class Content extends Component {
 
     return (
       <div className="content">
-        <div className="content__card">
-          <div>
-            <h3>TODOs</h3>
-            <div className="todos__list">
-              { todosList }
+        <div>
+          <div className="content__card">
+            <div>
+              <h3>TODOs</h3>
+              <div className="todos__list">
+                { todosList }
+              </div>
+              <NewInput 
+                key="newInput" display={display}
+                saveNewTodo={this.handleNewSaveTodo} 
+                cancelNewTodo={this.toggleAddTodo}/>
             </div>
-            <NewInput 
-              key="newInput" display={display}
-              saveNewTodo={this.handleNewSaveTodo} 
-              cancelNewTodo={this.toggleAddTodo}/>
+            { !newTodo && 
+              <span className="add__icon" onClick={this.toggleAddTodo}>
+                <FontAwesomeIcon icon={faPlusCircle}/>
+              </span>
+            }
           </div>
-          { !newTodo && 
-            <span className="add__icon" onClick={this.toggleAddTodo}>
-              <FontAwesomeIcon icon={faPlusCircle}/>
-            </span>
-          }
+        </div>
+        
+        <div className="percentage__of__day">
+          <h1>
+            <span>{percentageOfDay}</span>
+            <span>%</span>
+          </h1>
+          <h1>
+            {hours}
+            <span className="pulsing__colon">:</span>
+            {minutes}
+          </h1>
         </div>
       </div>
     );
